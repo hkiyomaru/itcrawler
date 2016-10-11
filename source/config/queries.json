@@ -3,7 +3,7 @@
                "clean",
                "safe"
   ],
-  "negative": ["unhappy"
+  "negative": ["unhappy",
                "dirty",
                "danger"
   ]

@@ -3,24 +3,37 @@ require './twitter_client'
 require './tweet_crawler'
 require './image_saver'
 
-
 class ITCrawler
   include JsonHandler
   include TwitterClient
   include TweetCrawler
   include ImageSaver
 
-  def initialize(query, count, lang, since_id)
-    @query = query
-    @count = count
-    @lang = lang
-    @since_id = since_id
+  def initialize(query, polarity, count, lang, since_id)
+    set_query(query)
+    set_polarity(polarity)
+    set_count(count)
+    set_lang(lang)
+    set_since_id(since_id)
     @image_meta_data = []
     @index = 0
   end
 
   def set_query(query)
     @query = query
+  end
+
+  def set_polarity(polarity)
+    if polarity == "positive"
+      @positive = 1
+      @negative = 0
+    elsif polarity == "negative"
+      @positive = 0
+      @negative = 1
+    else
+      @positive = 0
+      @negative = 0
+    end
   end
 
   def set_count(count)
@@ -37,6 +50,10 @@ class ITCrawler
 
   def get_query()
     return @query
+  end
+
+  def get_polarity()
+    return @positive, @negative
   end
 
   def get_count()
@@ -68,8 +85,8 @@ class ITCrawler
             puts ("media: #{m.media_url}")
             image_information = {id: @index,
                                  description: tw.full_text,
-                                 positive: 1,
-                                 negative: 0
+                                 positive: @positive,
+                                 negative: @negative
                                 }
             save_image(m.media_url, @index)
             @index += 1
