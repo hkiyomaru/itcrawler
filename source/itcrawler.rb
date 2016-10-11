@@ -3,7 +3,7 @@ require './crawler'
 # search configuration
 $query = ""
 $polarity = ""
-$count = 1000
+$count = 50
 $lang = "en"
 $since_id = nil
 
@@ -29,6 +29,9 @@ def main
       crawler.save_json(crawler.get_image_meta_data, $image_meta_data_path) # save meta-data
     end
   end
+
+  crawler.print_result() # print log
+
 end
 
 
