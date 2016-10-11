@@ -3,7 +3,7 @@ require './crawler'
 # search configuration
 $query = ""
 $polarity = ""
-$count = 50
+$count = 1000
 $lang = "en"
 $since_id = nil
 

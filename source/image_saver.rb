@@ -6,9 +6,14 @@ module ImageSaver
     filePath = dirName << index.to_s << ".jpg"
 
     open(filePath, 'wb') do |output|
-      open(url) do |data|
-        output.write(data.read)
+      begin
+        open(url) do |data|
+          output.write(data.read)
+        end
+      rescue Exception=> each
+        return -1 # failure
       end
     end
+    return 0 # success
   end
 end

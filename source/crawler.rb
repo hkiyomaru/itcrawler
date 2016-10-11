@@ -81,16 +81,24 @@ class ITCrawler
       if tw.media? then
         tw.media.each do |m|
           if m.is_a?(Twitter::Media::Photo)
-            puts ("text: #{tw.full_text}")
-            puts ("media: #{m.media_url}")
+            puts ("index: #{@index}")
+            puts ("  text: #{tw.full_text[0..30]}...")
+            puts ("  media_url: #{m.media_url}")
+
+            puts ("  Try to get media...")
             image_information = {id: @index,
                                  description: tw.full_text,
                                  positive: @positive,
                                  negative: @negative
                                 }
-            save_image(m.media_url, @index)
-            @index += 1
-            @image_meta_data << image_information
+            if save_image(m.media_url, @index) < 0 then
+              @index = @index # do nothing
+              puts ("    Failure. Next index=> #{@index}")
+            else
+              @index = @index + 1
+              @image_meta_data << image_information
+              puts ("    Success. Next index=> #{@index}")
+            end
           end
         end
       end
