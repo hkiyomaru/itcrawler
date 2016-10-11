@@ -1,0 +1,10 @@
+{
+  "positive": ["happy",
+               "clean",
+               "safe"
+  ],
+  "negative": ["unhappy"
+               "dirty",
+               "danger"
+  ]
+}
