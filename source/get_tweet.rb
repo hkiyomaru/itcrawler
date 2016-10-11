@@ -7,8 +7,9 @@ $lang = "en"
 $since_id = nil
 
 # file path
-$twitter_api_config_path = 'twitter_api_config.json'
-$image_meta_data_path = 'data/image_meta_data.json'
+$twitter_api_config_path = 'config/twitter_api_config.json'
+$image_meta_data_path = 'config/data/image_meta_data.json'
+$queries = 'config/queries.json'
 
 def main
   # initialize crawler
