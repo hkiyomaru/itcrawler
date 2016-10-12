@@ -86,30 +86,35 @@ class ITCrawler
   end
 
   def extract_it(tweets)
-    tweets.take(@count).each do |tw|
-      if tw.media? then
-        tw.media.each do |m|
-          if m.is_a?(Twitter::Media::Photo)
-            description = tw.full_text
-            media_url = m.media_url
-            print_progress(description, media_url) # print log
-            image_information = {
-              id: @index,
-              description: description,
-              positive: @positive,
-              negative: @negative
-            }
-            if save_image(media_url, @index) < 0 then
-              @index = @index # do nothing
-              print_success_or_failure(-1) # print log
-            else
-              @index += 1
-              @image_meta_data << image_information
-              print_success_or_failure(1) # print log
+    begin
+      tweets.take(@count).each do |tw|
+        if tw.media? then
+          tw.media.each do |m|
+            if m.is_a?(Twitter::Media::Photo)
+              description = tw.full_text
+              media_url = m.media_url
+              print_progress(description, media_url) # print log
+              image_information = {
+                id: @index,
+                description: description,
+                positive: @positive,
+                negative: @negative
+              }
+              if save_image(media_url, @index) < 0 then
+                @index = @index # do nothing
+                print_success_or_failure(-1) # print log
+              else
+                @index += 1
+                @image_meta_data << image_information
+                print_success_or_failure(1) # print log
+              end
             end
           end
         end
       end
+    rescue Twitter::Error::TooManyRequests => error
+      sleep error.rate_limit.reset_in + 1
+      retry
     end
   end
 end
